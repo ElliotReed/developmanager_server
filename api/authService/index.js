@@ -1,7 +1,7 @@
 const authRouter = require("./auth");
-const verify = require("./verifyToken");
+const authenticate = require("./authenticate");
 
 module.exports = {
   authRouter,
-  verify,
+  authenticate,
 };

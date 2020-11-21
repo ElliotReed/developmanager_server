@@ -1,20 +1,17 @@
-const router = require("express").Router();
-const { Op } = require("sequelize");
+const projectRouter = require("express").Router();
 
-const db = require("../models");
+const { Op } = require("sequelize");
+const db = require("../../models");
 
 /* GET project listing. */
-router.get("/", async (req, res, next) => {
-  console.log('req user: ', req.user);
-  // console.log('projectheaders: ', req.headers);
-  // const testId = '720f6285-ebf7-4f24-aee6-c26f54924e4f';
+projectRouter.get("/", async (req, res, next) => {
+  console.log("req.user: ", req.user);
   try {
     const projects = await db.project.findAll({
       where: { userId: { [Op.eq]: req.user.id } },
       attributes: ["name", "id", "archive"],
       order: [["name", "ASC"]],
     });
-    console.log('projects: ', projects);
     if (!projects) throw new Error("No projects have been found");
 
     const response = projects.map((project) => {
@@ -30,7 +27,7 @@ router.get("/", async (req, res, next) => {
 });
 
 /* GET project */
-router.get("/:projectId", async (req, res, next) => {
+projectRouter.get("/:projectId", async (req, res, next) => {
   const id = req.params.projectId;
   try {
     const project = await db.project.findOne({
@@ -47,9 +44,8 @@ router.get("/:projectId", async (req, res, next) => {
   }
 });
 
-router.patch("/:projectId", async (req, res, next) => {
+projectRouter.patch("/:projectId", async (req, res, next) => {
   const id = req.params.projectId;
-  console.log("Body: ", req.body);
   try {
     const project = await db.project.findOne({
       where: {
@@ -63,9 +59,7 @@ router.patch("/:projectId", async (req, res, next) => {
   }
 });
 
-router.post("/", async (req, res, next) => {
-  console.log("Headers: ", req.cookies);
-
+projectRouter.post("/", async (req, res, next) => {
   try {
     const project = await db.project.findOne({
       where: {
@@ -74,18 +68,11 @@ router.post("/", async (req, res, next) => {
     });
 
     if (project) throw new Error("Project already exists");
-    // const hashedPassword = await hash(password, 10);
     const newProject = await db.project.create(req.body);
-    // const newUser = await db.user.create({ email: email, password: hashedPassword });
     res.status(201).send({ user: newProject });
   } catch (err) {
     res.status(409).send({ error: err.message });
   }
-  // console.log('User', user);
-  // throw new Error('Broken');
-  // res.cookie('userId', '743');
-  // console.log('Cookies: ', req.cookies);
-  // res.send({ message: 'user created' });
 });
 
-module.exports = router;
+module.exports = projectRouter;
