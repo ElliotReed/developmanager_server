@@ -1,7 +1,7 @@
 const express = require("express");
 const api = express();
 
-const AuthService = require("./authService");
+const authService = require("./authService");
 const projectRouter = require("./routes/projects");
 const userRouter = require("./routes/users");
 
@@ -11,8 +11,8 @@ api.get("/", (req, res) => {
   });
 });
 
-api.use("/auth", AuthService.authRouter);
-api.use(AuthService.authenticate);
+api.use("/auth", authService.authRouter);
+api.use(authService.authenticate);
 api.use("/projects", projectRouter);
 api.use("/users", userRouter);
 
