@@ -2,7 +2,7 @@ const userRouter = require("express").Router();
 const bcrypt = require("bcryptjs");
 
 const db = require("../../models");
-const Op = db.Sequelize.Op;
+const { Op } = require("sequelize");
 
 const {
   registerValidation,

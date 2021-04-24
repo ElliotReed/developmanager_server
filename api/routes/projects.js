@@ -1,7 +1,7 @@
 const projectRouter = require("express").Router();
 
-const { Op } = require("sequelize");
 const db = require("../../models");
+const { Op } = require("sequelize");
 
 /* GET project listing. */
 projectRouter.get("/", async (req, res, next) => {
@@ -9,18 +9,13 @@ projectRouter.get("/", async (req, res, next) => {
   try {
     const projects = await db.project.findAll({
       where: { userId: { [Op.eq]: req.user.id } },
-      attributes: ["name", "id", "archive"],
+      attributes: ["name", "id", "archive", "createdAt", "updatedAt"],
       order: [["name", "ASC"]],
     });
+
     if (!projects) throw new Error("No projects have been found");
 
-    const response = projects.map((project) => {
-      return {
-        id: project.id,
-        name: project.name,
-      };
-    });
-    res.send(response);
+    res.send(projects);
   } catch (err) {
     res.status(500).send({ error: err.message });
   }
@@ -45,6 +40,7 @@ projectRouter.get("/:projectId", async (req, res, next) => {
 });
 
 projectRouter.patch("/:projectId", async (req, res, next) => {
+  console.log("patch req");
   const id = req.params.projectId;
   try {
     const project = await db.project.findOne({
@@ -53,13 +49,15 @@ projectRouter.patch("/:projectId", async (req, res, next) => {
       },
     });
     project.update(req.body);
-    res.status(200).send({ message: "Update successfull" });
+    res.status(200).send(project);
   } catch (err) {
     res.status(500).send({ error: err.message });
   }
 });
 
 projectRouter.post("/", async (req, res, next) => {
+  const projectWithUser = { userId: req.user.id, ...req.body };
+  console.log("projectWithUser: ", projectWithUser);
   try {
     const project = await db.project.findOne({
       where: {
@@ -68,8 +66,26 @@ projectRouter.post("/", async (req, res, next) => {
     });
 
     if (project) throw new Error("Project already exists");
-    const newProject = await db.project.create(req.body);
-    res.status(201).send({ user: newProject });
+    const newProject = await db.project.create(projectWithUser);
+    res.status(201).send(newProject);
+  } catch (err) {
+    res.status(409).send({ error: err.message });
+  }
+});
+
+projectRouter.delete("/:projectId", async (req, res, next) => {
+  const id = req.params.projectId;
+  console.log("id: ", id);
+  try {
+    const project = await db.project.findOne({
+      where: {
+        id: { [Op.eq]: id },
+      },
+    });
+
+    if (!project) throw new Error("Project doesn't exist");
+    await project.destroy();
+    res.status(200).send(id);
   } catch (err) {
     res.status(409).send({ error: err.message });
   }

@@ -2,7 +2,7 @@ const authRouter = require("express").Router();
 const bcrypt = require("bcryptjs");
 
 const User = require("../../models").user;
-const Op = require("Sequelize").Op;
+const { Op } = require("sequelize");
 
 const authenticate = require("./authenticate");
 const setResponseCredentials = require("./setResponseCredentials.js");
