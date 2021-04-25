@@ -13,7 +13,7 @@
 
 ---
 
-### Use cPanel Setup Node.js App!!!
+### Use cPanel Setup Node.js App
 
 - tool will create .htaccess for configuration and link to node_modules per node.js version
 
