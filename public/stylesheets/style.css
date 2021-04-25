@@ -1,11 +1,12 @@
 body {
   display: grid;
   place-content: center;
-  color: #dddddd;
   background-color: #222222;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  color: #dddddd;
+  font: 100% "Lucida Grande", Helvetica, Arial, sans-serif;
 }
 
 a {
   color: #556655;
+  font-weight: bold;
 }

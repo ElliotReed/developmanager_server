@@ -15,8 +15,12 @@ taskRouter.get("/", async (req, res, next) => {
     res.status(200).send(tasks);
   } catch (err) {
     res.status(500).send({ error: err.message });
-    s;
   }
+});
+
+taskRouter.post("/", (req, res, next) => {
+  console.log("Task post route hit");
+  res.status(201).send({ message: "A task was created" });
 });
 
 module.exports = taskRouter;
