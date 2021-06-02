@@ -1,27 +1,31 @@
-'use strict';
+"use strict";
 
 module.exports = (sequelize, DataTypes) => {
-	const User = sequelize.define(
-		'user',
-		{
-			id: {
-				primaryKey: true,
-				type: DataTypes.UUID,
-				defaultValue: DataTypes.UUIDV4,
-			},
-			email: {
-				type: DataTypes.STRING,
-				allowNull: false,
-			},
-			password: {
-				type: DataTypes.STRING,
-				allowNull: false,
-			},
-		},
-		{ timestamps: true, tableName: 'user' }
-	);
+  const User = sequelize.define(
+    "user",
+    {
+      id: {
+        primaryKey: true,
+        type: DataTypes.UUID,
+        defaultValue: DataTypes.UUIDV4,
+      },
+      email: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      password: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+    },
+    { timestamps: true, tableName: "user" }
+  );
 
-	User.associate = function (models) {};
+  User.associate = function (models) {
+    User.hasMany(models.project);
+    User.hasMany(models.task);
+  };
 
-	return User;
+  // User.sync({ alter: true });
+  return User;
 };

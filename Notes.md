@@ -2,16 +2,36 @@
 
 ## Sign in
 
-{
-"email": "elliot_devs@elliotreed.net",
-"password": "3llington"
-}
+      {
+      "email": "elliot_devs@elliotreed.net",
+      "password": "3llington"
+      }
+
+---
+
+### Local Connection
+
+    pgadmin masterPassword: 3lliot_d3v
+    superuser: postgres
+    password: 3llington
 
 ---
 
 ## Deployment
 
----
+### Files & Folders to upload
+
+    - api
+    - bin
+    - config
+    - migrations
+    - models
+    - public
+    - seeders
+    - services
+    - utils
+    /app
+    /package.json
 
 ### Use cPanel Setup Node.js App
 

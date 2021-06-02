@@ -36,7 +36,7 @@ authRouter.post("/register", async (req, res) => {
     if (!newUser)
       throw new Error(`An error occured while adding the user to the database`);
 
-    res.sendStatus(201);
+    res.status(201).send({ email: newUser.email, password: password });
   } catch (err) {
     res.status(400).json({ error: err.message });
   }
