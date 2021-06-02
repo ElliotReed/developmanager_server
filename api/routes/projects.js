@@ -6,9 +6,10 @@ const { Op } = require("sequelize");
 /* GET project listing. */
 projectRouter.get("/", async (req, res, next) => {
   console.log("req.user: ", req.user);
+  const id = req.user.id;
   try {
     const projects = await db.project.findAll({
-      where: { userId: { [Op.eq]: req.user.id } },
+      where: { userId: { [Op.eq]: id } },
       attributes: ["name", "id", "archive", "createdAt", "updatedAt"],
       order: [["name", "ASC"]],
     });

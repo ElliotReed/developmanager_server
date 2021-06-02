@@ -10,6 +10,10 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         defaultValue: DataTypes.UUIDV4,
       },
+      foreignId: {
+        allowNull: false,
+        type: DataTypes.UUID,
+      },
       userId: {
         allowNull: false,
         type: DataTypes.UUID,
@@ -22,19 +26,32 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: true,
         type: DataTypes.STRING,
       },
-      completedDate: {
-        allowNull: true,
-        type: DataTypes.BOOLEAN,
+      dtStart: {
+        allowNull: false,
+        default: Date.now(),
+        type: DataTypes.DATE,
       },
-      recurrence: {
+      dtDue: {
         allowNull: true,
-        type: DataTypes.DATEONLY,
+        type: DataTypes.DATE,
+      },
+      dtCompleted: {
+        allowNull: true,
+        type: DataTypes.DATE,
+      },
+      durationInMinutes: {
+        allowNull: true,
+        type: DataTypes.INTEGER,
       },
     },
-    { timestamps: true, tableName: "task" }
+    { timestamps: false, tableName: "task" }
   );
 
-  Task.associate = function (models) {};
+  Task.associate = function (models) {
+    Task.belongsTo(models.user);
+    Task.hasOne(models.rrule, { onDelete: "CASCADE" });
+  };
 
+  // Task.sync({ alter: true });
   return Task;
 };

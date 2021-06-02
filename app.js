@@ -1,9 +1,9 @@
 require("dotenv/config");
-const express = require("express");
-const path = require("path");
-const cookieParser = require("cookie-parser");
-const logger = require("morgan");
 const cors = require("cors");
+const cookieParser = require("cookie-parser");
+const express = require("express");
+const logger = require("morgan");
+const path = require("path");
 
 const api = require("./api");
 
@@ -41,6 +41,7 @@ app.use((err, req, res, next) => {
   console.log("res.status: ", res.status);
   // res.status(err.statusCode || 500);
   res.json({
+    error: err,
     message: err.message,
     stack: err.stack,
   });
