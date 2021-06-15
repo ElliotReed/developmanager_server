@@ -5,9 +5,7 @@ const tokenService = require("./tokenService");
 const setResponseCredentials = require("./setResponseCredentials.js");
 
 const getUserById = async (id) => {
-  return (user = await User.findOne({
-    where: { id: { [Op.eq]: id } },
-  }));
+  return (user = await User.findByPk(id));
 };
 
 function getAccessTokenFromRequest(req) {

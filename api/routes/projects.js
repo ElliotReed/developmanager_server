@@ -24,13 +24,14 @@ projectRouter.get("/", async (req, res, next) => {
 
 /* GET project */
 projectRouter.get("/:projectId", async (req, res, next) => {
-  const id = req.params.projectId;
+  const filter = {
+    where: {
+      id: { [Op.eq]: req.params.projectId },
+    },
+  };
+
   try {
-    const project = await db.project.findOne({
-      where: {
-        id: { [Op.eq]: id },
-      },
-    });
+    const project = await db.project.findOne(filter);
 
     if (!project) throw new Error("Project not found");
 

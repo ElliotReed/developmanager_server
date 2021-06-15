@@ -6,7 +6,16 @@ const { endOfToday, startOfToday } = require("date-fns");
 
 taskRouter.get("/", async (req, res, next) => {
   const filter = {
-    where: { userId: { [Op.eq]: req.user.id } },
+    where: {
+      userId: { [Op.eq]: req.user.id },
+      dtCompleted: {
+        [Op.or]: {
+          [Op.eq]: null,
+          [Op.gte]: startOfToday(),
+        },
+      },
+      dtStart: { [Op.lte]: endOfToday() },
+    },
     attributes: { exclude: ["userId"] },
     include: [
       {
@@ -44,6 +53,7 @@ taskRouter.get("/byforeign/:foreignId", async (req, res, next) => {
     },
     attributes: { exclude: ["userId"] },
     include: [db.rrule],
+    order: [["dtStart", "ASC"]],
   };
 
   try {
