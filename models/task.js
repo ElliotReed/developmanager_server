@@ -50,6 +50,7 @@ module.exports = (sequelize, DataTypes) => {
   Task.associate = function (models) {
     Task.belongsTo(models.user);
     Task.hasOne(models.rrule, { onDelete: "CASCADE" });
+    Task.belongsTo(models.project, { foreignKey: 'foreignId' });
   };
 
   // Task.sync({ alter: true });

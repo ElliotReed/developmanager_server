@@ -65,6 +65,39 @@ taskRouter.get("/byforeign/:foreignId", async (req, res, next) => {
   }
 });
 
+taskRouter.get("/project", async (req, res, next) => {
+  const filter = {
+    where: {
+      userId: { [Op.eq]: req.user.id },
+      dtCompleted: {
+        [Op.or]: {
+          [Op.eq]: null,
+          [Op.gte]: startOfToday(),
+        },
+      },
+      dtStart: { [Op.lte]: endOfToday() },
+    },
+    attributes: ["task", "description", "dtStart"],
+    include: [
+      {
+        model: db.project,
+        required: true,
+        attributes: ["id", "name"],
+      },
+    ],
+    order: [["dtStart", "ASC"]],
+  };
+
+  try {
+    const taskList = await db.task.findAll(filter);
+    res.status(200).send(taskList);
+  } catch (err) {
+    res.status(500).send({ error: err.message });
+    console.error(err);
+  }
+  console.log('tasks/project');
+})
+
 taskRouter.patch("/:taskId", async (req, res, next) => {
   const taskToSave = {
     ...req.body,

@@ -29,6 +29,7 @@ module.exports = (sequelize, DataTypes) => {
 
   Project.associate = function (models) {
     Project.belongsTo(models.user);
+    Project.hasMany(models.task, { foreignKey: 'foreignId' });
   };
 
   // Project.sync({ alter: true });

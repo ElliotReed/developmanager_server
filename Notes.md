@@ -3,7 +3,7 @@
 ## Sign in
 
         {
-        "email": "elliot_devs@elliotreed.net",
+        "email": "devs@elliotreed.net",
         "password": "3llington"
         }
 
