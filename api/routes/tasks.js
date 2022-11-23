@@ -40,6 +40,13 @@ taskRouter.get("/", async (req, res, next) => {
 
 taskRouter.get("/byforeign/:foreignId", async (req, res, next) => {
   const foreignId = req.params.foreignId;
+  let dtStart = { [Op.lte]: endOfToday() }
+  if (req.query.future) {
+    console.log('req.query.future: ', req.query.future);
+    dtStart = { [Op.gte]: endOfToday() }
+  } else {
+    console.log("no future");
+  }
   const filter = {
     where: {
       foreignId: { [Op.eq]: foreignId },
@@ -49,7 +56,7 @@ taskRouter.get("/byforeign/:foreignId", async (req, res, next) => {
           [Op.gte]: startOfToday(),
         },
       },
-      dtStart: { [Op.lte]: endOfToday() },
+      dtStart: dtStart,
     },
     attributes: { exclude: ["userId"] },
     include: [db.rrule],
