@@ -7,6 +7,6 @@ module.exports = function setResponseCredentials(user, res) {
 
   res.set("Access-Control-Expose-Headers", "x-access-token");
   res.set("x-access-token", accessToken);
-  res.cookie("refresh-token", refreshToken, cookieOptions());
+  res.cookie(process.env.REFRESH_COOKIE_NAME, refreshToken, cookieOptions());
   return res;
 };

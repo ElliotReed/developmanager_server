@@ -27,7 +27,7 @@ module.exports = async function authenticate(req, res, next) {
     }
   }
 
-  const refreshToken = req.cookies["refresh-token"];
+  const refreshToken = req.cookies[process.env.REFRESH_COOKIE_NAME];
   if (!refreshToken) {
     const error = new Error("You must be signed in for access.");
     error.statusCode = 403;
