@@ -6,7 +6,7 @@ on:
 env:
   VPS_HOST: ${{ secrets.VPS_HOST }}
   VPS_USER: ${{ secrets.VPS_USER }}
-  SITE_NAME: <your-app-name>
+  SITE_NAME: developmanager_server
   NODE_VERSION: "24"
 jobs:
   deploy:
