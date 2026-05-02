@@ -1,4 +1,4 @@
-name: Deploy Node App to VPS
+name: Deploy Node App to Production
 on:
   push:
     branches: [main]
@@ -35,6 +35,7 @@ jobs:
             --exclude '.github' \
             --exclude '.env' \
             --exclude 'config' \
+            --exclude 'README.md' \
             ./ \
             ${{ env.VPS_USER }}@${{ env.VPS_HOST }}:${{ env.REMOTE_SITE_PATH }}/
 
